@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import Bio.PDB
-import munkres
+from Munkres import Munkres
 import numpy as np
 from scipy.spatial import distance
 import sys
@@ -11,14 +11,6 @@ from Bio.QCPSuperimposer import QCPSuperimposer
 
 RESIDUE_LENGTH = 8
 RMS_THRESH = 0.00001
-
-## unequal array test case
-#d = np.array([[1, 2, 3, 6], [2, 4, 6, 5], [3, 6, 9, 1]]).astype(np.int32)
-#d.resize(4,4)
-#print d
-#c = np.array(munkres.run_munkres(d, 0)).reshape(d.shape)
-#print c[0:3, 0:4]
-#sys.exit(-1)
 
 def get_ca_atom_list(model):
   atoms = []; reses = []
@@ -36,6 +28,7 @@ def superimpose(p1, p2):
     mrms = sys.float_info.max
     l1 = p1.shape[0]; l2 = p2.shape[0]; ml = max(l1, l2)
     sup = QCPSuperimposer()
+    munkres = Munkres()
     for x in range(0, l1 - RESIDUE_LENGTH, RESIDUE_LENGTH):
         r1 = p1[x : x + RESIDUE_LENGTH]
         for y in range(0, l2 - RESIDUE_LENGTH, RESIDUE_LENGTH):
@@ -53,9 +46,7 @@ def superimpose(p1, p2):
             ## Note we are not rotating anything just finding a global non-sequential alignment
             ###################################################################################################################
             dist_matrix = distance.cdist(p1, dot(p2, rot) + tran, 'euclidean').astype(np.int32)
-            dist_matrix.resize((ml, ml))
-            cost_matrix = np.array(munkres.run_munkres(dist_matrix, 0)).reshape(dist_matrix.shape)
-            cost_matrix = cost_matrix[0:l1, 0:l2]
+            cost_matrix = munkres.run_munkres(dist_matrix)
             non_zero = cost_matrix > 0
             edges = np.column_stack(np.where(non_zero))
             a = np.array(map(lambda x : p1[x[0]], edges));  b = np.array(map(lambda x : p2[x[1]], edges));  
