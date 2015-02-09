@@ -1,5 +1,4 @@
-munkres README file
-===================
+# munkres
 implementation of the hungarian algorithm in c with a python wrapper
 
 An implementation of the hungarian algorithm with a python wrapper. The basic 
