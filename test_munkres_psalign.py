@@ -76,8 +76,8 @@ def superimpose(p1, p2):
 pdomain1 = '1aa9.pdb'; pdomain2 = '1ash.pdb'
 ## parse protein structure files
 pdb_parser = Bio.PDB.PDBParser(QUIET = True)
-ref_structure = pdb_parser.get_structure("reference", "../pdb_data/%s" %pdomain1)
-sample_structure = pdb_parser.get_structure("sample", "../pdb_data/%s" %pdomain2)
+ref_structure = pdb_parser.get_structure("reference", "pdb_test_data/%s" %pdomain1)
+sample_structure = pdb_parser.get_structure("sample", "pdb_test_data/%s" %pdomain2)
 ## make a list of CA atoms (in the firt model of the structures) to align
 (ref_atoms, ref_reses) = get_ca_atom_list(ref_structure[0])
 (sample_atoms, sample_reses) = get_ca_atom_list(sample_structure[0])
