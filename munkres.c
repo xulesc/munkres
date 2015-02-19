@@ -288,7 +288,7 @@ void step_six(int** matrix, int nrow, int ncol, int* rowCover, int* colCover, in
 }
 
 #ifndef __PYMOD__
-int** runMunkers(int** matrix, int nrow, int ncol, bool max) {
+int** runMunkres(int** matrix, int nrow, int ncol, bool max) {
 #endif
 #ifdef __PYMOD__
 
